@@ -13,22 +13,15 @@ pipeline {
     }
 
     stages {
-        stage('init') { 
+        stage('Init and Plan') { 
             steps {
+                 withAWS(region: 'us-east-1', credentials: 'aws-creds'){
                 sh """
                 cd 00-vpc 
                 terraform init -reconfigure
-                """
-            }
-        }
-        stage('plan') { 
-            steps {
-                withAWS(region: 'us-east-1', credentials: 'aws-creds'){
-                sh """
-                cd 00-vpc 
                 terraform plan -out=tfplan
-                """ 
-                }
+                """
+                 }
             }
         }
         stage('Deploy') { 
