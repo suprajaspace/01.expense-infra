@@ -1,5 +1,4 @@
 pipeline {
-    //agent any
     agent {
         label 'AGENT-1'
     } 
@@ -8,10 +7,6 @@ pipeline {
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    parameters {
-        choice(name: 'ACTION', choices: ['apply', 'destroy'], description: 'Select Action')
-    }
-
     stages {
         stage('Init and Plan') { 
             steps {
@@ -29,7 +24,6 @@ pipeline {
                 message "Should we continue?"
                 ok "Yes, we should."
             }
-            }
             steps {
                  withAWS(region: 'us-east-1', credentials: 'aws-creds'){
                 sh """
@@ -43,9 +37,11 @@ pipeline {
                     fi
                 """
                  }
+                 
+                 }
             }
         } 
-    }
+    
     post {
          always{
              echo "This section runs always"
