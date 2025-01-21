@@ -24,63 +24,28 @@ pipeline {
                  }
             }
         }
-
-
         stage('Apply or Destroy') { 
+            input {
+                message "Should we continue?"
+                ok "Yes, we should."
+            }
+            }
             steps {
                  withAWS(region: 'us-east-1', credentials: 'aws-creds'){
-                
                 sh """
                 cd 00-vpc 
                 if [ ${params.ACTION} == 'apply' ]
                 then
                     terraform apply -auto-approve tfplan
-                    elseif [ ${params.ACTION} == 'destroy' ]
+                    elif [ ${params.ACTION} == 'destroy' ]
                     then
                     terraform destroy -auto-approve
-                terraform plan -out=tfplan
+                    fi
                 """
                  }
             }
-        }
-        stage('Deploy') { 
-            when {
-                 expression { env.GIT_BRANCH == 'origin/main' }
-            }
-            steps {
-                    sh 'echo This is deploy'
-            }
-        }
-
-        stage('Print Params') {
-            steps {
-                echo "Hello ${params.PERSON}"
-
-                echo "Biography: ${params.BIOGRAPHY}"
-
-                echo "Toggle: ${params.TOGGLE}"
-
-                echo "Choice: ${params.CHOICE}"
-
-                echo "Password: ${params.PASSWORD}"
-            }
-        }
-        //  stage('Approval') {
-        //     input {
-        //         message "Should we continue?"
-        //         ok "Yes, we should."
-        //         submitter "alice,bob"
-        //         parameters {
-        //             string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
-        //         }
-        //     }
-        //     steps {
-        //         echo "Hello, ${PERSON}, nice to meet you."
-        //     }
-        // }
+        } 
     }
-
-
     post {
          always{
              echo "This section runs always"
