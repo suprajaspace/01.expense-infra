@@ -2,13 +2,13 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "5.75.0"
+      version = "5.82.0"
     }
   }
 
   backend "s3" {
     bucket         = "supra-remote-state-dev"
-    key            = "expense-sg-dev"
+    key            = "expense-cdn-dev"
     region         = "us-east-1"
     dynamodb_table = "supra-locking-dev"
   }
