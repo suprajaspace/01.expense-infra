@@ -72,3 +72,7 @@ VALIDATE $? "helm installation"
 # k9s
 curl -sS https://webinstall.dev/k9s | bash
 VALIDATE $? "K9S installation"
+
+# mysql
+dnf install mysql -y
+VALIDATE $? "mysql installation"
