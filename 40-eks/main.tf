@@ -1,7 +1,7 @@
 resource "aws_key_pair" "eks" {
   key_name   = "eks"
   # you can paste the public key directly like this
-  public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICRJ77TtHA/vajDZegZ4vZeBQWpwAyt/+hYKaN+dSnZK supra@supraja"
+  
   #public_key = file("~/.ssh/eks.pub")
   # ~ means windows home directory
 }
@@ -20,6 +20,9 @@ module "eks" {
     kube-proxy             = {}
     vpc-cni                = {}
   }
+
+  #aws kms delete-alias --alias-name alias/eks/expense-dev --region us-east-1
+
 
   vpc_id                   = data.aws_ssm_parameter.vpc_id.value
   subnet_ids               = local.private_subnet_ids
